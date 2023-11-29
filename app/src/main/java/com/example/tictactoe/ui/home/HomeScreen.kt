@@ -18,14 +18,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 
+/**
+ * En este caso como tendremos que esperar a crear el nuevo juego antes de navegar, le enviamos
+ * la lambda navigateToGame al viewModel al igual que hicimos en el RealTimeChat cuando llamabamos
+ * a las corrutinas asincronas
+ */
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
-    navigateToGame: () -> Unit
+    navigateToGame: (String, String, Boolean) -> Unit
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.weight(2f))
-        CreateGame(onCreateGame = { homeViewModel.onCreateGame() })
+        CreateGame(onCreateGame = { homeViewModel.onCreateGame(navigateToGame) })
         Spacer(modifier = Modifier.weight(1f))
         Divider(
             modifier = Modifier
@@ -33,7 +38,7 @@ fun HomeScreen(
                 .height(2.dp)
         )
         Spacer(modifier = Modifier.weight(1f))
-        JoinGame(onJoinGame = { homeViewModel.onJoinGame(it) })
+        JoinGame(onJoinGame = { gameId -> homeViewModel.onJoinGame(gameId, navigateToGame) })
         Spacer(modifier = Modifier.weight(2f))
     }
 }
