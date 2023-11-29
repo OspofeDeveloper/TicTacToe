@@ -16,12 +16,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.weight(2f))
-        CreateGame()
+        CreateGame(onCreateGame = { homeViewModel.onCreateGame() })
         Spacer(modifier = Modifier.weight(1f))
         Divider(
             modifier = Modifier
@@ -29,25 +30,27 @@ fun HomeScreen() {
                 .height(2.dp)
         )
         Spacer(modifier = Modifier.weight(1f))
-        JoinGame()
+        JoinGame(onJoinGame = { homeViewModel.onJoinGame(it) })
         Spacer(modifier = Modifier.weight(2f))
     }
 }
 
+/** En vez de pasar el viewModel pasamos una función lambda, para seguir el principio de
+ *  single source of truth */
 @Composable
-fun CreateGame() {
-    Button(onClick = { /*TODO*/ }) {
+fun CreateGame(onCreateGame: () -> Unit) {
+    Button(onClick = { onCreateGame() }) {
         Text("Create game")
     }
 }
 
 @Composable
-private fun JoinGame() {
-    var text by remember{ mutableStateOf("")}
+private fun JoinGame(onJoinGame: (String) -> Unit) {
+    var text by remember { mutableStateOf("") }
 
     TextField(value = text, onValueChange = { text = it })
 
-    Button(onClick = { }, enabled = text.isNotEmpty()) {
+    Button(onClick = { onJoinGame(text) }, enabled = text.isNotEmpty()) {
         Text(text = "Join Game")
     }
 }
