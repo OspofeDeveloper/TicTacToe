@@ -1,5 +1,6 @@
 package com.example.tictactoe.data.network
 
+import android.util.Log
 import com.example.tictactoe.data.network.model.GameData
 import com.google.firebase.database.DatabaseReference
 import javax.inject.Inject
@@ -15,5 +16,8 @@ class FirebaseService @Inject constructor(
     fun createGame(gameData: GameData) {
         val gameReference = reference.child(PATH).push()
         gameReference.setValue(gameData)
+            .addOnFailureListener { Log.i("ospofe error", it.toString()) }
+            .addOnCanceledListener { Log.i("ospofe error", "dfasf") }
+            .addOnSuccessListener { Log.i("ospofe error", it.toString()) }
     }
 }
