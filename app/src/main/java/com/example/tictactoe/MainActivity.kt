@@ -10,8 +10,18 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.tictactoe.ui.home.HomeScreen
 import com.example.tictactoe.ui.theme.TicTacToeTheme
 import dagger.hilt.android.AndroidEntryPoint
+
+// Listado de partidas
+    // board : List<String> = 9 positions
+    // gameId: String
+    // Player1
+        // playerId
+        // playerType
+    // Player2
+    // PlayerTurn
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -24,7 +34,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    HomeScreen()
                 }
             }
         }
