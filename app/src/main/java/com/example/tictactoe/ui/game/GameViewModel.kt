@@ -61,20 +61,20 @@ class GameViewModel @Inject constructor(
     private fun join(gameId: String) {
         viewModelScope.launch {
             firebaseService.joinToGame(gameId).collect {
-                val result = it?.copy(isGameReady = it.player2 != null, isMyTurn = isMyTurn())
+                val result = it?.copy(isGameReady = it.player2 != null, isMyTurn = isMyTurn(it.playerTurn))
                 _game.value = result
                 verifyWinner()
             }
         }
     }
 
-    private fun isMyTurn(): Boolean {
-        return game.value?.playerTurn?.userId == userId
+    private fun isMyTurn(playerTurn: PlayerModel): Boolean {
+        return playerTurn.userId == userId
     }
 
     fun onItemSelected(position: Int) {
         val currentGame = _game.value ?: return
-        if (currentGame.isGameReady && currentGame.board[position] == PlayerType.Empty && isMyTurn()) {
+        if (currentGame.isGameReady && currentGame.board[position] == PlayerType.Empty && isMyTurn(currentGame.playerTurn)) {
             viewModelScope.launch {
                 val newBoard = currentGame.board.toMutableList()
                 newBoard[position] = getPlayer()
