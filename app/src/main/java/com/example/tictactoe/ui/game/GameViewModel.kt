@@ -68,4 +68,31 @@ class GameViewModel @Inject constructor(
         return game.value?.playerTurn?.userId == userId
     }
 
+    fun onItemSelected(position: Int) {
+        val currentGame = _game.value ?: return
+        if (currentGame.isGameReady && currentGame.board[position] == PlayerType.Empty && isMyTurn()) {
+            viewModelScope.launch {
+                val newBoard = currentGame.board.toMutableList()
+                newBoard[position] = getPlayer()
+
+                firebaseService.updateGame(
+                    currentGame.copy(board = newBoard, playerTurn = getPlayerTurn()!!).toData()
+                )
+            }
+        }
+    }
+
+
+    private fun getPlayer(): PlayerType {
+        return when {
+            (game.value?.player1?.userId == userId) -> PlayerType.FirstPlayer
+            (game.value?.player2?.userId == userId) -> PlayerType.SecondPlayer
+            else -> PlayerType.Empty
+        }
+    }
+
+    private fun getPlayerTurn(): PlayerModel? {
+        return if (game.value?.player1?.userId == userId) game.value?.player2 else game.value?.player1
+    }
+
 }
