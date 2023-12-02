@@ -1,5 +1,8 @@
 package com.example.tictactoe.ui.model
 
+import com.example.tictactoe.data.network.model.GameData
+import com.example.tictactoe.data.network.model.PlayerData
+
 /**
  * player2 tiene que ser nullable porque al crear la partida no se ha unido todavia.
  *
@@ -11,10 +14,28 @@ data class GameModel(
     val player1: PlayerModel,
     val player2: PlayerModel?,
     val playerTurn: PlayerModel,
-    val gameId: String
-)
+    val gameId: String,
+    val isGameReady: Boolean = false
+) {
+    fun toData(): GameData {
+        return GameData(
+            board = board.map { it.id },
+            gameId = gameId,
+            player1 = player1.toData(),
+            player2 = player2?.toData(),
+            playerTurn = playerTurn.toData(),
+        )
+    }
+}
 
-data class PlayerModel(val userId: String, val playerType: PlayerType)
+data class PlayerModel(val userId: String, val playerType: PlayerType) {
+    fun toData(): PlayerData {
+        return PlayerData(
+            userId = userId,
+            playerType = playerType.id
+        )
+    }
+}
 
 sealed class PlayerType(val id: Int, val symbol: String) {
     object FirstPlayer : PlayerType(2, "X")

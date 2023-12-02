@@ -55,4 +55,14 @@ class FirebaseService @Inject constructor(
             dataSnapshot.getValue(GameData::class.java)?.toModel()
         }
     }
+
+    /**
+     * Es lo mismo hacer reference.child(PATH).child(gameData.gameId) que
+     * reference.child("$PATH/$gameId"))
+     */
+    fun updateGame(gameData: GameData) {
+        if(gameData.gameId != null){
+            reference.child(PATH).child(gameData.gameId).setValue(gameData)
+        }
+    }
 }

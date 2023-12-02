@@ -11,12 +11,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.tictactoe.ui.model.GameModel
 
 @Composable
 fun GameScreen(
@@ -30,15 +33,23 @@ fun GameScreen(
         gameViewModel.joinToGame(gameId, userId, owner)
     }
 
-    Board()
+    val game: GameModel? by gameViewModel.game.collectAsState()
+
+    Board(game)
 }
 
-@Preview(showBackground = true)
 @Composable
-fun Board() {
+fun Board(game: GameModel?) {
     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = "IdDePartida")
-        Text(text = "Es tu turno/Esperando Rival/Turno rival")
+        Text(text = game?.gameId.orEmpty())
+
+        val status = if(game?.isGameReady == true) {
+            "Tu turno/ Turno rival"
+        } else {
+            "Waiting for player 2"
+        }
+
+        Text(text = status)
 
         Row {
             GameCell()
