@@ -7,7 +7,10 @@ import com.example.tictactoe.data.network.model.PlayerData
  * player2 tiene que ser nullable porque al crear la partida no se ha unido todavia.
  *
  * Se puede apreciar la gracia de los mapeadores, ya que este modelo es mucho mas limpio que el de
- * data. Casi no tenemos nulables y por lo tanto es mucho mas robusto
+ * data. Casi no tenemos nulables y por lo tanto es mucho mas robusto.
+ *
+ * A los campos del modelo que no tenemos en GameData los tenemos que inicializar para que no nos
+ * falle la función toModel de GameData.
  */
 data class GameModel(
     val board: List<PlayerType>,
@@ -15,7 +18,8 @@ data class GameModel(
     val player2: PlayerModel?,
     val playerTurn: PlayerModel,
     val gameId: String,
-    val isGameReady: Boolean = false
+    val isGameReady: Boolean = false,
+    val isMyTurn: Boolean = false
 ) {
     fun toData(): GameData {
         return GameData(

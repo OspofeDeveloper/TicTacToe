@@ -43,8 +43,10 @@ fun HomeScreen(
     }
 }
 
-/** En vez de pasar el viewModel pasamos una función lambda, para seguir el principio de
- *  single source of truth */
+/**
+ * En vez de pasar el viewModel pasamos una función lambda, para seguir el principio de
+ * single source of truth
+ */
 @Composable
 fun CreateGame(onCreateGame: () -> Unit) {
     Button(onClick = { onCreateGame() }) {

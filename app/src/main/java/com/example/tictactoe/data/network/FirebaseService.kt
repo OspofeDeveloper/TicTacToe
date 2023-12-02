@@ -51,7 +51,7 @@ class FirebaseService @Inject constructor(
      * directa. Esto lo hacemos especificando el subpath al cual queremos ir
      */
     fun joinToGame(gameId: String): Flow<GameModel?> {
-        return reference.database.reference.child("$PATH/$gameId").snapshots.map {dataSnapshot ->
+        return reference.child("$PATH/$gameId").snapshots.map {dataSnapshot ->
             dataSnapshot.getValue(GameData::class.java)?.toModel()
         }
     }

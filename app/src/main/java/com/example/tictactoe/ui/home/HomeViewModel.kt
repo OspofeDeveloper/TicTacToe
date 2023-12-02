@@ -32,6 +32,12 @@ class HomeViewModel @Inject constructor(
         return Calendar.getInstance().timeInMillis.hashCode().toString()
     }
 
+    /**
+     * Como el jugador que crea la partida siempre va a ser el jugador 1, creamos ese jugador
+     * a partir de currentPlayer, indicando que el jugador es el jugador 1 y posteriormente guardar
+     * en nuestro modelo de Data esa info en player1 y playerTurn, ya que el jugador 1 siempre va
+     * a empezar primero
+     */
     private fun createNewGame(): GameData {
         val currentPlayer = PlayerData(playerType = 1)
 
